@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" href="momofav.png" type="image/png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>momos.html</title>
+    <style>
+        body {
+            width: 100vw;
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: black;
+            cursor: none;
+            position: relative;
+        }
+
+        img {
+            width: 15vw; 
+            user-select: none;
+            pointer-events: none;
+        }
+
+        .cursor {
+            position: fixed;
+            width: 30px;
+            height: 30px;
+            background-color: black;
+            border: 2px solid white;
+            border-radius: 50%;
+            mix-blend-mode: difference;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            transition: background-color 0.2s ease, transform 0.1s ease-out;
+            z-index: 9999;
+        }
+
+        img:hover ~ .cursor {
+            background-color: white;
+            border: 2px solid black;
+        }
+    </style>
+</head>
+<body>
+    <img src="momos.png" alt="momos" class="center" draggable="false">
+    <div class="cursor"></div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const cursor = document.querySelector(".cursor");
+            let mouseX = 0, mouseY = 0;
+            let cursorX = 0, cursorY = 0;
+
+            document.addEventListener("mousemove", (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+            });
+
+            function moveCursor() {
+                cursorX += (mouseX - cursorX) * 0.2;
+                cursorY += (mouseY - cursorY) * 0.2;
+                cursor.style.left = `${cursorX}px`;
+                cursor.style.top = `${cursorY}px`;
+                requestAnimationFrame(moveCursor);
+            }
+            moveCursor();
+
+            document.querySelectorAll("img").forEach(img => {
+                img.addEventListener("mouseenter", () => {
+                    cursor.style.backgroundColor = "white";
+                    cursor.style.border = "2px solid black";
+                });
+                img.addEventListener("mouseleave", () => {
+                    cursor.style.backgroundColor = "black";
+                    cursor.style.border = "2px solid white";
+                });
+            });
+        });
+    </script>
+</body>
+</html>
